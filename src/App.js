@@ -3,7 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { increment } from './state/counter/counterSlice';
-import { todoUpdate } from './state/todo/todo'
+import { todoUpdate } from './state/todo/todo';
+import { infoUpdate } from './state/personalInfo/personalInfoSlice';
+import { countryUpdate } from './state/country/countrySlice';
 function App() {
   return (
     <div className="App container my-5">
@@ -31,6 +33,8 @@ const Counter = () => {
       <TodoList></TodoList>
 
       <PersonalInfo></PersonalInfo>
+
+      <CountryInfo></CountryInfo>
 
     </div>
   )
@@ -78,27 +82,27 @@ const PersonalInfo = () => {
   const username = useRef();
   const email = useRef();
   const country = useRef();
-  const info_view = useSelector(state=> state.personalInfo.value);
+  const info_view = useSelector(state => state.personalInfo.value);
   const dispatch = useDispatch();
 
-  const personalInfoSubmit = event=> {
+  const personalInfoSubmit = event => {
     event.preventDefault();
-    // let infoData = {
-    //   username: username.current.value,
-    //   email: email.current.value,
-    //   country: country.current.value
-    // }
-    dispatch('b')
+    let infoData = {
+      username: username.current.value,
+      email: email.current.value,
+      country: country.current.value
+    }
+    dispatch(infoUpdate(infoData))
   }
 
-  //console.log(info_view)
+  console.log(info_view)
   return (
     <div className="">
       <h1>
         Personal Information
       </h1>
 
-      <form action="" onSubmit={event=> personalInfoSubmit(event)}>
+      <form action="" onSubmit={event => personalInfoSubmit(event)}>
 
         <div className="input-group d-block mb-3">
           <label htmlFor="" className='form-label d-block mb-2'>Username</label>
@@ -119,6 +123,76 @@ const PersonalInfo = () => {
         </div>
       </form>
 
+      {
+        info_view !== [] && (
+          <table className='table table-bordered table-hoverable'>
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Country</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                info_view.map((v, i) => {
+                  return (
+                    <tr key={i}>
+                      <td>
+                        {i+1}.
+                      </td>
+                      <td>
+                        {v.username}
+                      </td>
+                      <td>
+                        {v.email}
+                      </td>
+                      <td>
+                        {v.country}
+                      </td>
+                    </tr>
+                  )
+                })
+              }
+            </tbody>
+          </table>
+        )
+      }
+
+    </div>
+  )
+}
+
+const CountryInfo = () => {
+  let getCountry = useRef();
+  let countryInfo = useSelector(state => state.countryInfo.value);
+  let dispatch = useDispatch()
+  console.log(countryInfo)
+
+  return (
+    <div className="">
+      <h2>
+        Country Info
+      </h2>
+      <input type="text" className='form-control mb-3' ref={getCountry} />
+      <button className='btn btn-danger' onClick={() => dispatch(countryUpdate(getCountry.current.value))}>Add me</button>
+
+      {
+        countryInfo !== [] && (
+          <ul>
+            {
+              countryInfo.map(v => {
+                return (
+                  <li key={v}>
+                    {v}
+                  </li>
+                )
+              })
+            }
+          </ul>
+        )
+      }
     </div>
   )
 }

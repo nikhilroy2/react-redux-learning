@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const PersonalInfoSlice = createSlice({
+export const personalInfoSlice = createSlice({
     name: 'personal_info_slice',
     initialState: {
         value: []
@@ -14,4 +14,4 @@ export const PersonalInfoSlice = createSlice({
     }
 })
 
-export const {infoUpdate} = PersonalInfoSlice.actions
+export const {infoUpdate} = personalInfoSlice.actions
